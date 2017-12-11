@@ -1,0 +1,60 @@
+.App {
+    background: #402625;
+    min-height: 100vh;
+}
+
+.main {
+    padding: 20px 0;
+    max-width: 320px;
+    margin: auto;
+    text-align: center;
+}
+
+.head {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.characters {
+    margin-bottom: 20px;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    padding: 0 20px;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    border: 2px solid white;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+img {
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 80px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+img.active {
+    border-color: #881f1b;
+}
+
+.icon {
+    height: 100px;
+    width: 100px;
+    margin: auto;
+    font-size: 54px;
+    border-radius: 50%;
+    border: 3px solid white;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.icon i {
+    line-height: 100px;
+}
