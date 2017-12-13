@@ -1,4 +1,5 @@
 import media from './media/index'
+import beginningAudio from './media/beginning.mp3';
 
 export default {
     characters: {
@@ -71,5 +72,10 @@ export default {
             rusName: 'фанатик',
             night: false
         }
+    },
+    initialState: {
+        phase: 1,
+        selected: [],
+        playlist: [beginningAudio]
     }
 };

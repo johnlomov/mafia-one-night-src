@@ -58,3 +58,7 @@ img.active {
 .icon i {
     line-height: 100px;
 }
+
+.tip {
+    font-size: 20px;
+}

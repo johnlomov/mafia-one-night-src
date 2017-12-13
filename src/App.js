@@ -4,21 +4,19 @@ import './App.css';
 
 import images from './img/index';
 import config from './config';
-import beginningAudio from './media/beginning.mp3';
 import endAudio from './media/end.mp3';
+
+import Player from './Player';
 
 
 const characters = config.characters;
+const initialState = config.initialState;
 
 class App extends Component {
     constructor() {
         super()
 
-        this.state = {
-            phase: 1,
-            selected: [],
-            playlist: [beginningAudio]
-        }
+        this.state = initialState
     }
 
     onCharacterClick = (id, add) => {
@@ -65,90 +63,54 @@ class App extends Component {
         }
     }
 
+    onEnd = () =>  {
+        this.setState({phase: 3});
+    }
+
+    onNewGame = () => {
+        this.setState(initialState);
+    }
+
     render() {
+        let template,
+            phase = this.state.phase;
+
+        if (phase === 1) {
+            template = <Fragment>
+                <div className="head">Выберите персонажей</div>
+                {renderCharacters(this.onCharacterClick, this.state)}
+                <a href=""
+                   className="button"
+                   onClick={this.onStart}
+                >Начать игру</a>
+            </Fragment>
+        }
+
+        if (phase === 2) {
+            template = <Player
+                    playlist={this.state.playlist}
+                    onEnd={this.onEnd}
+                />
+        }
+
+        if (phase === 3) {
+            template = <Fragment>
+                <div>Счетчик</div>
+                <a href=""
+                   className="button"
+                   onClick={this.onNewGame}
+                >Новая игра</a>
+            </Fragment>
+
+        }
+
         return (
             <div className="App">
                 <div className="main">
-                    {
-                        this.state.phase === 1
-                            ?
-                            <Fragment>
-                                <div className="head">Выберите персонажей</div>
-                                {renderCharacters(this.onCharacterClick, this.state)}
-                                <a href=""
-                                   className="button"
-                                   onClick={this.onStart}
-                                >Начать игру</a>
-                            </Fragment>
-                            :
-                            <Fragment>
-                                <Player playlist={this.state.playlist}/>
-                            </Fragment>
-                    }
+                    {template}
                 </div>
             </div>
         );
-    }
-}
-
-class Player extends Component {
-    index = 0
-
-    delay = 2000
-
-    constructor() {
-        super();
-
-        this.state = {
-            isPlay: true
-        }
-    }
-
-    componentDidMount() {
-        let playlist = this.props.playlist;
-
-        this.audio.src = playlist[this.index];
-        this.audio.play();
-        this.audio.addEventListener('ended', () => {
-            let src = playlist[++this.index];
-
-            if (src) {
-                this.audio.src = src;
-
-                setTimeout(() => {
-                    this.audio.play();
-                }, this.delay);
-            }
-
-            if (this.index === 1) this.delay = 5000;
-            if (this.index === playlist.length - 2) this.delay = 2000;
-        });
-    }
-
-    onClick = () => {
-        if (this.state.isPlay) this.audio.pause();
-        else this.audio.play();
-
-        this.setState((prevState, props) => {
-            return {isPlay: !prevState.isPlay};
-        })
-    }
-
-    render() {
-        return (
-            <Fragment>
-                <div onClick={this.onClick} className="icon">
-                    {
-                        this.state.isPlay ?
-                            <i className="fa fa-pause" aria-hidden="true"></i> :
-                            <i className="fa fa-play" aria-hidden="true"></i>
-                    }
-                </div>
-                <audio ref={(el) => {
-                    this.audio = el
-                }} src=''/>
-            </Fragment>
-        )
     }
 }
 
