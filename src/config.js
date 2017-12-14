@@ -76,6 +76,7 @@ export default {
     initialState: {
         phase: 1,
         selected: [],
-        playlist: [beginningAudio]
-    }
+        playlist: [beginningAudio, ' ']
+    },
+    delay: 5000
 };

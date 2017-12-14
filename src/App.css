@@ -38,6 +38,7 @@ img {
     width: 80px;
     cursor: pointer;
     margin: 5px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 img.active {
@@ -61,4 +62,9 @@ img.active {
 
 .tip {
     font-size: 20px;
+}
+
+.timer {
+    font-size: 50px;
+    margin: 50px auto;
 }

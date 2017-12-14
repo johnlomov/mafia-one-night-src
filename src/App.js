@@ -7,6 +7,7 @@ import config from './config';
 import endAudio from './media/end.mp3';
 
 import Player from './Player';
+import Timer from './Timer';
 
 
 const characters = config.characters;
@@ -32,7 +33,7 @@ class App extends Component {
                     })]
                 }
             }
-        }, () => console.log('state: ', this.state))
+        })
     }
 
     onStart = (e) => {
@@ -50,6 +51,7 @@ class App extends Component {
 
                     if (characters[intId].night) {
                         playlist = playlist.concat(characters[intId].media);
+                        playlist.push(' ');
                     }
                 });
 
@@ -59,16 +61,12 @@ class App extends Component {
                     phase: 2,
                     playlist
                 }
-            }, () => console.log('state: ', this.state));
+            });
         }
     }
 
     onEnd = () =>  {
         this.setState({phase: 3});
-    }
-
-    onNewGame = () => {
-        this.setState(initialState);
     }
 
     render() {
@@ -95,10 +93,9 @@ class App extends Component {
 
         if (phase === 3) {
             template = <Fragment>
-                <div>Счетчик</div>
+                <Timer onNewGame={this.onNewGame}/>
                 <a href=""
                    className="button"
-                   onClick={this.onNewGame}
                 >Новая игра</a>
             </Fragment>
 

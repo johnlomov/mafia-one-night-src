@@ -1,18 +1,17 @@
 import React, {Component, Fragment} from 'react';
+import config from './config';
+
+const delay = config.delay;
 
 export default class Player extends Component {
     timerId
 
     index = 0
 
-    delay = 2000
+    delay = delay
 
-    constructor() {
-        super();
-
-        this.state = {
-            isPlay: true
-        }
+    state = {
+        isPlay: true
     }
 
     componentDidMount() {
@@ -20,6 +19,8 @@ export default class Player extends Component {
 
         this.audio.src = playlist[this.index];
         this.audio.play();
+
+        this.checkPauseEl(playlist);
 
         this.audio.addEventListener('ended', () => {
             let src = playlist[++this.index];
@@ -30,11 +31,20 @@ export default class Player extends Component {
                 this.play();
             }
 
-            if (this.index === 1) this.delay = 5000;
-            if (this.index === playlist.length - 2) this.delay = 2000;
+            this.checkPauseEl(playlist);
 
             if (this.index === playlist.length) onEnd();
         });
+    }
+
+    checkPauseEl = (playlist) => {
+        if (playlist[this.index + 1] === ' ') {
+            this.delay = 1500;
+
+            this.index++;
+        } else {
+            this.delay = delay;
+        }
     }
 
     play = () => {
