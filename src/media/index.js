@@ -1,5 +1,5 @@
 import detective from './detective/index';
-// import double from './double/index';
+import double from './double/index';
 import drunkard from './drunkard/index';
 import journalist from './journalist/index';
 import lawyer from './lawyer/index';
@@ -10,7 +10,7 @@ import widow from './widow/index';
 
 export default {
     detective,
-    // double,
+    double,
     drunkard,
     journalist,
     lawyer,

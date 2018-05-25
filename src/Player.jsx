@@ -1,43 +1,40 @@
 import React, {Component, Fragment} from 'react';
-import config from './config';
-
-const delay = config.delay;
 
 export default class Player extends Component {
     timerId
 
     index = 0
 
-    delay = delay
+    delay = this.props.delay
 
     state = {
         isPlay: true
     }
 
     componentDidMount() {
-        let {playlist, onEnd} = this.props;
+        let {playlist, onEnd, delay} = this.props;
 
-        this.audio.src = playlist[this.index];
-        this.audio.play();
+        this.props.audio.src = playlist[this.index];
+        this.props.audio.play();
 
-        this.checkPauseEl(playlist);
+        this.pauseWorker(playlist);
 
-        this.audio.addEventListener('ended', () => {
+        this.props.audio.addEventListener('ended', () => {
             let src = playlist[++this.index];
 
             if (src) {
-                this.audio.src = src;
+                this.props.audio.src = src;
 
                 this.play();
             }
 
-            this.checkPauseEl(playlist);
+            this.pauseWorker(playlist, delay);
 
             if (this.index === playlist.length) onEnd();
         });
     }
 
-    checkPauseEl = (playlist) => {
+    pauseWorker = (playlist, delay) => {
         if (playlist[this.index + 1] === ' ') {
             this.delay = 1500;
 
@@ -49,14 +46,14 @@ export default class Player extends Component {
 
     play = () => {
         this.timerId = setTimeout(() => {
-            this.audio.play();
+            this.props.audio.play();
 
         }, this.delay);
     }
 
     onClick = () => {
         if (this.state.isPlay) {
-            this.audio.pause();
+            this.props.audio.pause();
 
             clearTimeout(this.timerId);
         } else {
@@ -79,9 +76,6 @@ export default class Player extends Component {
                     }
                 </div>
                 <p className="tip">Нажми на паузу если не успеваешь!</p>
-                <audio ref={(el) => {
-                    this.audio = el
-                }} src=''/>
             </Fragment>
         )
     }

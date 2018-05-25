@@ -65,18 +65,26 @@ class App extends Component {
         }
     }
 
-    onEnd = () =>  {
+    onEnd = () => {
         this.setState({phase: 3});
+    }
+
+    onChangeDelay = (delay) => {
+        this.setState({delay})
     }
 
     render() {
         let template,
-            phase = this.state.phase;
+            phase = this.state.phase,
+            delay = this.state.delay;
 
         if (phase === 1) {
             template = <Fragment>
                 <div className="head">Выберите персонажей</div>
                 {renderCharacters(this.onCharacterClick, this.state)}
+                <div className="delays">
+                    {renderDelays(this.onChangeDelay, this.state)}
+                </div>
                 <a href=""
                    className="button"
                    onClick={this.onStart}
@@ -86,14 +94,18 @@ class App extends Component {
 
         if (phase === 2) {
             template = <Player
-                    playlist={this.state.playlist}
-                    onEnd={this.onEnd}
-                />
+                playlist={this.state.playlist}
+                onEnd={this.onEnd}
+                audio={this.audio}
+                delay={delay}
+            />
         }
 
         if (phase === 3) {
             template = <Fragment>
-                <Timer onNewGame={this.onNewGame}/>
+                <Timer onNewGame={this.onNewGame}
+                       audio={this.audio}
+                />
                 <a href=""
                    className="button"
                 >Новая игра</a>
@@ -105,10 +117,31 @@ class App extends Component {
             <div className="App">
                 <div className="main">
                     {template}
+                    <audio ref={(el) => {
+                        this.audio = el
+                    }} src=''/>
                 </div>
             </div>
         );
     }
+}
+
+function renderDelays(onClick, state) {
+    let template = [];
+
+    config.delays.forEach((delay) => {
+        template.push(
+            <span
+                className={state.delay === delay ? 'active' : null}
+                key={delay}
+                onClick={() => onClick(delay)}
+            >
+                {`${delay / 1000} сек.`}
+            </span>
+        )
+    });
+
+    return template;
 }
 
 function renderCharacters(onCharacterClick, state) {

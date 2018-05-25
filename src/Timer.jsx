@@ -12,19 +12,20 @@ export default class Timer extends Component {
     }
 
     componentDidMount() {
-        this.audio.play();
+        this.props.audio.src = playlist[0];
+        this.props.audio.play();
 
-        this.audio.addEventListener('ended', this.startCounter);
+        this.props.audio.addEventListener('ended', this.startCounter);
     }
 
     componentDidUpdate() {
         if (this.state.seconds <= 0) {
             clearInterval(this.intervalId);
 
-            this.audio.removeEventListener('ended', this.startCounter);
+            this.props.audio.removeEventListener('ended', this.startCounter);
 
-            this.audio.src = playlist[1];
-            this.audio.play();
+            this.props.audio.src = playlist[1];
+            this.props.audio.play();
         }
     }
 
@@ -47,10 +48,6 @@ export default class Timer extends Component {
 
         return (
             <Fragment>
-                <audio
-                    ref={el => this.audio = el}
-                    src={playlist[0]}
-                ></audio>
                 <div className="timer">
                     <span>{min}</span><span> : </span><span>{sec === 0 ? `6${sec}` : sec}</span>
                 </div>
